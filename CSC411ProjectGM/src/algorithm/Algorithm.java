@@ -27,16 +27,20 @@ public class Algorithm {
             return assign;
         }
         for ( final Game g : n.getgames() ) {
-            if ( g.getTime() <= csp.getTimeLeft() ) {
+            boolean same = false;
+            if ( csp.getCurrentPos() - 1 != -1 ) {
+                same = assign.get( csp.getCurrentPos() - 1 ).getgames().contains( g );
+            }
+            if ( g.getTime() <= csp.getTimeLeft() && !same ) {
                 assign.get( csp.getCurrentPos() ).add( g );
-                csp.setTimeLeft( g.getTime() - g.getTime() ); // maybe
+                csp.setTimeLeft( csp.getTimeLeft() - g.getTime() );
                 LinkedList<Node> result = new LinkedList<Node>();
                 result = recBackSearch( assign, csp );
                 if ( !result.isEmpty() ) {
                     return result;
                 }
                 assign.get( csp.getCurrentPos() ).remove( g );
-                csp.setTimeLeft( g.getTime() + g.getTime() ); // maybe
+                csp.setTimeLeft( csp.getTimeLeft() + g.getTime() );
             }
         }
         return new LinkedList<Node>();

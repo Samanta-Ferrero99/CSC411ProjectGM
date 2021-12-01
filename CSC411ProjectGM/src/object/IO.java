@@ -85,17 +85,21 @@ public class IO {
             boolean sero = false;
             final LinkedList<Game> solutionFinal = new LinkedList<Game>();
             int runs = 0;
-            while ( !sero || runs > 10 ) {
+            while ( !sero && runs < 10 ) {
                 final LinkedList<Game> solution = new LinkedList<Game>();
                 final Iterator<Node> i = list.iterator();
                 float timeLeft = time;
                 while ( i.hasNext() ) {
                     final LinkedList<Game> games = i.next().getgames();
+                    if ( games.size() == 0 ) {
+                        System.out.print( "There is not a combination of games fullfilling your request." );
+                        return;
+                    }
                     final Random rand = new Random();
                     final Game g = games.get( rand.nextInt( games.size() ) );
                     solution.add( g );
                     timeLeft = timeLeft - g.getTime();
-                    if ( timeLeft == 0 ) {
+                    if ( timeLeft == 0 || ( timeLeft > 0 && !i.hasNext() ) ) {
                         sero = true;
                         solutionFinal.addAll( solution );
                     }
@@ -108,7 +112,7 @@ public class IO {
             final FileWriter stream = new FileWriter( file );
             final Iterator<Game> i2 = solutionFinal.iterator();
             while ( i2.hasNext() ) {
-                stream.write( i2.next().toString() );
+                stream.write( i2.next().toString() + '\n' );
             }
             stream.close();
         }
