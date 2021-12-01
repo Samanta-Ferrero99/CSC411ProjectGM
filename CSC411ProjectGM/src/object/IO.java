@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -74,22 +75,42 @@ public class IO {
      *            the list of games
      * @throws IOException
      */
-    public static void write ( final LinkedList<Game> list, final String file ) {
+    public static void write ( final LinkedList<Node> list, final String file, final float time ) {
 
+        if ( list.isEmpty() ) {
+            System.out.print( "No Nodes Exists, something went wrong" );
+            return;
+        }
         try {
-            final FileWriter stream = new FileWriter( file );
-            if ( !list.isEmpty() ) {
-                final Iterator<Game> i = list.iterator();
+            boolean sero = false;
+            final LinkedList<Game> solutionFinal = new LinkedList<Game>();
+            int runs = 0;
+            while ( !sero || runs > 10 ) {
+                final LinkedList<Game> solution = new LinkedList<Game>();
+                final Iterator<Node> i = list.iterator();
+                float timeLeft = time;
                 while ( i.hasNext() ) {
-                    String game = i.next().toString();
-                    game = game + "\n";
-                    stream.write( game );
+                    final LinkedList<Game> games = i.next().getgames();
+                    final Random rand = new Random();
+                    final Game g = games.get( rand.nextInt( games.size() ) );
+                    solution.add( g );
+                    timeLeft -= g.getTime();
+                    if ( timeLeft == 0 ) {
+                        sero = true;
+                        solutionFinal.addAll( solution );
+                    }
+                    else if ( timeLeft < 0 && i.hasNext() ) {
+                        break;
+                    }
                 }
-                stream.close();
+                runs++;
             }
-            else {
-                System.out.print( "List is empty" );
+            final FileWriter stream = new FileWriter( file );
+            final Iterator<Game> i2 = solutionFinal.iterator();
+            while ( i2.hasNext() ) {
+                stream.write( i2.next().toString() );
             }
+            stream.close();
         }
         catch ( final IOException e ) {
             System.out.print( "Could not write to file " + file );
