@@ -33,7 +33,7 @@ public class Main {
         final int amountPlayers = in.nextInt();
 
         System.out.println( "Please enter amount of time: " );
-        final int timeLeft = in.nextInt();
+        final float timeLeft = in.nextFloat();
 
         in.close();
 
@@ -46,7 +46,12 @@ public class Main {
         }
 
         for ( int i = 0; i < amountGames; i++ ) {
-            nodes.add( new Node( list ) );
+            final LinkedList<Game> games = new LinkedList<Game>();
+            for ( int j = 0; j < list.size(); j++ ) {
+                games.add( list.get( j ) );
+            }
+            final Node node = new Node( games );
+            nodes.add( node );
         }
 
         final Queue<Arc> queue = new LinkedList<Arc>();

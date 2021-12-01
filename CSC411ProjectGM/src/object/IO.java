@@ -94,7 +94,7 @@ public class IO {
                     final Random rand = new Random();
                     final Game g = games.get( rand.nextInt( games.size() ) );
                     solution.add( g );
-                    timeLeft -= g.getTime();
+                    timeLeft = timeLeft - g.getTime();
                     if ( timeLeft == 0 ) {
                         sero = true;
                         solutionFinal.addAll( solution );

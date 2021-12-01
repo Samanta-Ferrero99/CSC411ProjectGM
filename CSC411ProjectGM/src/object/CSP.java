@@ -11,7 +11,7 @@ import java.util.Queue;
  */
 public class CSP {
     private final LinkedList<Game> games;
-    private final LinkedList<Node> nodes;
+    private final LinkedList<Node> domain;
     private final Queue<Arc>       arcs;
     private float                  timeLeft;
     private Node                   current;
@@ -29,7 +29,7 @@ public class CSP {
      */
     public CSP ( final LinkedList<Node> nodes, final Queue<Arc> arcs, final float timeLeft,
             final LinkedList<Game> games ) {
-        this.nodes = nodes;
+        this.domain = nodes;
         this.arcs = arcs;
         this.timeLeft = timeLeft;
         this.current = null;
@@ -63,16 +63,24 @@ public class CSP {
      */
     public Node getNextNode () {
         if ( current == null ) {
-            current = nodes.getFirst();
+            current = domain.getFirst();
             currentPos = 0;
             return current;
         }
         currentPos += 1;
-        if ( currentPos >= nodes.size() ) {
+        if ( currentPos >= domain.size() ) {
             return null;
         }
-        current = nodes.get( currentPos );
+        current = domain.get( currentPos );
         return current;
+    }
+
+    public LinkedList<Node> getDomains () {
+        return domain;
+    }
+
+    public int getCurrentPos () {
+        return currentPos;
     }
 
     /**

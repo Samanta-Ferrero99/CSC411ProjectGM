@@ -11,6 +11,9 @@ import object.Node;
 public class Algorithm {
     public static LinkedList<Node> backSearch ( final CSP csp ) {
         final LinkedList<Node> assign = new LinkedList<Node>();
+        for ( int i = 0; i < csp.getDomains().size(); i++ ) {
+            assign.add( new Node( new LinkedList<Game>() ) );
+        }
 
         return recBackSearch( assign, csp );
     }
@@ -21,17 +24,19 @@ public class Algorithm {
         }
         final Node n = csp.getNextNode();
         if ( n == null ) {
-            return new LinkedList<Node>();
+            return assign;
         }
-        for ( final Game g : csp.getGames() ) {
+        for ( final Game g : n.getgames() ) {
             if ( g.getTime() <= csp.getTimeLeft() ) {
-                n.add( g );
+                assign.get( csp.getCurrentPos() ).add( g );
+                csp.setTimeLeft( g.getTime() - g.getTime() ); // maybe
                 LinkedList<Node> result = new LinkedList<Node>();
                 result = recBackSearch( assign, csp );
                 if ( !result.isEmpty() ) {
                     return result;
                 }
-                n.remove( g );
+                assign.get( csp.getCurrentPos() ).remove( g );
+                csp.setTimeLeft( g.getTime() + g.getTime() ); // maybe
             }
         }
         return new LinkedList<Node>();
@@ -50,15 +55,19 @@ public class Algorithm {
 
     public static boolean removeInconsistentValue ( final Arc arc ) {
         boolean removed = false;
-        for ( final Game g : arc.getnode1().getgames() ) {
+        final LinkedList<Game> games1 = arc.getnode1().getgames();
+        final LinkedList<Game> games2 = arc.getnode2().getgames();
+
+        for ( int i = 0; i < games1.size(); i++ ) {
             boolean exist = false;
-            for ( final Game g2 : arc.getnode2().getgames() ) {
-                if ( !g.getGenre().equals( g2.getGenre() ) ) {
+            for ( int j = 0; j < games2.size(); j++ ) {
+                if ( !games1.get( i ).getGenre().equals( games2.get( j ).getGenre() ) ) {
                     exist = true;
                 }
             }
+
             if ( !exist ) {
-                arc.getnode1().remove( g );
+                games1.remove( i );
                 removed = true;
             }
         }
