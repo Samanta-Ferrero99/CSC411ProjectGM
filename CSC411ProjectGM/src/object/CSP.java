@@ -68,6 +68,9 @@ public class CSP {
             return current;
         }
         currentPos += 1;
+        if ( currentPos >= nodes.size() ) {
+            return null;
+        }
         current = nodes.get( currentPos );
         return current;
     }

@@ -20,6 +20,9 @@ public class Algorithm {
             return assign;
         }
         final Node n = csp.getNextNode();
+        if ( n == null ) {
+            return new LinkedList<Node>();
+        }
         for ( final Game g : csp.getGames() ) {
             if ( g.getTime() <= csp.getTimeLeft() ) {
                 n.add( g );
