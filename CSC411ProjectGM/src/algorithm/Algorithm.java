@@ -2,6 +2,7 @@ package algorithm;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Random;
 
 import object.Arc;
 import object.CSP;
@@ -13,6 +14,12 @@ public class Algorithm {
         final LinkedList<Node> assign = new LinkedList<Node>();
         for ( int i = 0; i < csp.getDomains().size(); i++ ) {
             assign.add( new Node( new LinkedList<Game>() ) );
+        }
+        final Random rand = new Random();
+        final Game g = csp.getGames().get( rand.nextInt( csp.getGames().size() ) );
+
+        if ( g.getTime() < csp.getTimeLeft() ) {
+            assign.getFirst().getgames().add( g );
         }
 
         return recBackSearch( assign, csp );
@@ -28,8 +35,10 @@ public class Algorithm {
         }
         for ( final Game g : n.getgames() ) {
             boolean same = false;
-            if ( csp.getCurrentPos() - 1 != -1 ) {
-                same = assign.get( csp.getCurrentPos() - 1 ).getgames().contains( g );
+            for ( int i = 0; i < csp.getCurrentPos(); i++ ) {
+                if ( assign.get( i ).getgames().contains( g ) ) {
+                    same = true;
+                }
             }
             if ( g.getTime() <= csp.getTimeLeft() && !same ) {
                 assign.get( csp.getCurrentPos() ).add( g );

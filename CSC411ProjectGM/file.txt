@@ -1,6 +1,6 @@
 Mario Party, 1, party, 5, 1
 Mario Kart, 1, racing, 3, 1
-Super Smash Bros. Ultimate, 1, fighting, 4, 0.167
+Super Smash Bros. Ultimate, 1, fighting, 4, 0.5
 Overcooked, 2, party, 2, 7.5
 Clubhouse Games:51 Worldwide Classics, 2, party, 1, 7
 Jackbox, 2, party, 10, 0.5
